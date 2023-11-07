@@ -75,7 +75,7 @@ def hit_check(firing_line, firing_column, hit_list, miss_list, aim_board, miss_b
     firing_number = letters.index(firing_column)
     firing_line = str(firing_line)
     if aim_board[firing_line][firing_number] == '0':
-        if aim_board == player_list:
+        if aim_board == player_list or aim_board == vet_list:
             print("We've Been Hit!")
         else:
             print("Direct Hit!")
