@@ -36,7 +36,7 @@ The addition of the options menu was for unique experiences however many times y
 Each mode can be combined and changed about for fun. Combining a lot of different, however, may cause issues.
 
 # Smaller Modifications
--Veteran Mode boatBot
+---Veteran Mode boatBot---
 
 If you've seen the code, you've might have noticed that when boatBot fires in Veteran Mode, the robot's misfire list isn't taken in as a parameter.
 
@@ -50,7 +50,7 @@ If you wish to enable this, go to line 733 and make the change below:
 *                                                   ^
 
 
--boatBot's Name
+---boatBot's Name---
 
 boatBot's name was a random typo I made when reprogramming the project. I decided to keep it in as a name.
 
@@ -59,7 +59,7 @@ boatBot refers to the randomizer you play against. Not giving it a name didn't f
 Thus, boatBot was born.
 
 
--The Miss-Hit board comment on line 762
+---The Miss-Hit board comment on line 762---
 
 The reason for the player having one and boatBot not having one is because... boatBot doesn't need one, it uses a list.
 
