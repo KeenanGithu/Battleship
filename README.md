@@ -18,22 +18,22 @@ If there's a more recent version of Battleship uploaded to my GitHub page, unles
 
 # Certain Design Choices
 
->The Board Size:
+The Board Size:
 The board size was shrunk from a 10x10 to a 7x7 by accident when I designed this project in early 2022. By the time I found out, it was already too late to fix it.
 I've kept it this way due to how unique it makes the game feel and to keep the length of games shorter.
 
->Game Customization Via The Options Menu
+Game Customization Via The Options Menu
 The addition of the options menu was for unique experiences however many times you've played the game. The options menu used to lock other options. This has since been removed for variety.
--AutoPlace and AutoBoat was for people who wanted to get to the game faster and not have to set up boards
--Rapid Fire is used for getting through the game easier or just about whatever you want to do.
--Hard Mode is for players who want a slightly harder challenge
--Veteran Mode is for players who want to roll the dice and see if they can truly master the sea
--War Mode, as the name implies, gives boatBot (will get to the name later) the power of a war fleet, requiring a vast amount of luck to win the War
+- AutoPlace and AutoBoat was for people who wanted to get to the game faster and not have to set up boards.
+- Rapid Fire is used for getting through the game easier or just about whatever you want to do.
+- Hard Mode is for players who want a slightly harder challenge.
+- Veteran Mode is for players who want to roll the dice and see if they can truly master the sea.
+- War Mode, as the name implies, gives boatBot (will get to the name later) the power of a war fleet, requiring a vast amount of luck to win the War.
 
 Each mode can be combined and changed about for fun. Combining a lot of different, however, may cause issues.
 
->Smaller Modifications
--Veteran Mode boatBot
+# Smaller Modifications
+- Veteran Mode boatBot
 If you've seen the code, you've might have noticed that when boatBot fires in Veteran Mode, the robot's misfire list isn't taken in as a parameter.
 This was to give the player a chance, as both War Mode and Veteran Mode make it extremely difficult to win by itself, so it will occasionally hit the same space twice or a few more times.
 If you wish to enable this, go to line 733 and make the change below:
@@ -42,7 +42,7 @@ hit_check(robot_fire_li, robot_fire_le, None, None, vet_list, None)
 Changing 4th parameter to robot_misfire
 hit_check(robot_fire_li, robot_fire_le, None, robot_misfire, vet_list, None)
                                                     ^
--boatBot's Name
+- boatBot's Name
 boatBot's name was a random typo I made when reprogramming the project. I decided to keep it in as a name.
 boatBot refers to the randomizer you play against. Not giving it a name didn't feel right, and I couldn't find a good one for it.
 Thus, boatBot was born.
@@ -55,10 +55,10 @@ Despite the name, it holds both the misses AND the hits.
 
 # Final Notes
 
->Will This Project Continue:
+Will This Project Continue:
 I'll still work on Battleship from time to time, just less so. Some future features I plan on adding are listed below.
 
->Future Plans For The Project:
+Future Plans For The Project:
 One of the main ones I've thought about is an online connection. However, that'd require me to familiarize myself with that facet of Python, so it may take a bit.
 Another one that might come sooner is a TwoPlayer mode. Due to the massive code cleanup I did, this has become more viable to add in.
 
