@@ -49,6 +49,7 @@ If you wish to enable this, go to line 733 and make the change below:
 * hit_check(robot_fire_li, robot_fire_le, None, robot_misfire, vet_list, None)
 *                                                   ^
 
+
 -boatBot's Name
 
 boatBot's name was a random typo I made when reprogramming the project. I decided to keep it in as a name.
@@ -56,6 +57,7 @@ boatBot's name was a random typo I made when reprogramming the project. I decide
 boatBot refers to the randomizer you play against. Not giving it a name didn't feel right, and I couldn't find a good one for it.
 
 Thus, boatBot was born.
+
 
 -The Miss-Hit board comment on line 762
 
