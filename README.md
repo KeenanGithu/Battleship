@@ -34,20 +34,24 @@ Each mode can be combined and changed about for fun. Combining a lot of differen
 
 # Smaller Modifications
 - Veteran Mode boatBot
+
 If you've seen the code, you've might have noticed that when boatBot fires in Veteran Mode, the robot's misfire list isn't taken in as a parameter.
 This was to give the player a chance, as both War Mode and Veteran Mode make it extremely difficult to win by itself, so it will occasionally hit the same space twice or a few more times.
 If you wish to enable this, go to line 733 and make the change below:
 
-hit_check(robot_fire_li, robot_fire_le, None, None, vet_list, None)
-Changing 4th parameter to robot_misfire
-hit_check(robot_fire_li, robot_fire_le, None, robot_misfire, vet_list, None)
-                                                    ^
+* hit_check(robot_fire_li, robot_fire_le, None, None, vet_list, None)
+* Changing 4th parameter to robot_misfire
+* hit_check(robot_fire_li, robot_fire_le, None, robot_misfire, vet_list, None)
+*                                                   ^
+
 - boatBot's Name
+
 boatBot's name was a random typo I made when reprogramming the project. I decided to keep it in as a name.
 boatBot refers to the randomizer you play against. Not giving it a name didn't feel right, and I couldn't find a good one for it.
 Thus, boatBot was born.
 
 -The Miss-Hit board comment on line 762
+
 The reason for the player having one and boatBot not having one is because... boatBot doesn't need one, it uses a list.
 I found lists repetitive to look at while first developing the game part of the project, which resulted in the creation of the player_miss_board.
 Despite the name, it holds both the misses AND the hits.
