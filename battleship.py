@@ -9,6 +9,7 @@ options_list = {
     'Hard Mode': False,
     'Veteran Mode': False,
     'War Mode': False,
+    'Boat Overlap': False,
     'Go Back': False
 }
 
@@ -63,7 +64,24 @@ player_miss_board = {
     '6': ['O','O','O','O','O','O','O'],
     '7': ['O','O','O','O','O','O','O']
 }
-
+helpful_board = {
+  '1': ['A1','B1','C1','D1','E1','F1','G1'],
+  '2': ['A2','B2','C2','D2','E2','F2','G2'],
+  '3': ['A3','B3','C3','D3','E3','F3','G3'],
+  '4': ['A4','B4','C4','D4','E4','F4','G4'],
+  '5': ['A5','B5','C5','D5','E5','F5','G5'],
+  '6': ['A6','B6','C6','D6','E6','F6','G6'],
+  '7': ['A7','B7','C7','D7','E7','F7','G7']
+}
+extra_board = {
+  '1': ['A','B','C','D','E','F','G'],
+  '2': ['A','B','C','D','E','F','G'],
+  '3': ['A','B','C','D','E','F','G'],
+  '4': ['A','B','C','D','E','F','G'],
+  '5': ['A','B','C','D','E','F','G'],
+  '6': ['A','B','C','D','E','F','G'],
+  '7': ['A','B','C','D','E','F','G']
+}
 #list of lines and positions to pick from
 lines = ['1','2','3','4','5','6','7']
 letters = ['A','B','C','D','E','F','G']
@@ -93,7 +111,7 @@ def hit_check(firing_line, firing_column, hit_list, miss_list, aim_board, miss_b
         if miss_board == None:
           pass
         else:
-          miss_board[firing_line][firing_number] = 0
+          miss_board[firing_line][firing_number] = 'M'
           miss_list.append(str(firing_column) + str(firing_line))
 
 #function to check if someone wins (only called within game) (explained more in hit_check_AND_win_check.py)
@@ -116,12 +134,115 @@ def win_check(list_check):
       global Game
       Game = False
     
+def direction_setup(spaces, line_count, letter):
+  global direction
+  if options_list['Veteran Mode'] == True:
+    if spaces == 4:
+      if line_count < 4:
+        direction.remove('up')
+      if line_count > 2:
+        direction.remove('down')
+      if letters.index(letter) >= 2:
+        direction.remove('right')
+      if letters.index(letter) <= 2:
+        direction.remove('left')
+    if spaces == 3:
+      if line_count < 3:
+        direction.remove('up')
+      if line_count > 3:
+        direction.remove('down')
+      if letters.index(letter) >= 3:
+        direction.remove('right')
+      if letters.index(letter) <= 1:
+        direction.remove('left')
+    if spaces == 2:
+      if line_count < 2:
+        direction.remove('up')
+      if line_count > 4:
+        direction.remove('down')
+      if letters.index(letter) >= 4:
+        direction.remove('right')
+      if letters.index(letter) <= 0:
+        direction.remove('left')
+  else:
+    if spaces == 5:
+      if line_count < 5:
+        direction.remove('up')
+      if line_count > 3:
+        direction.remove('down')
+      if letters.index(letter) >= 3:
+        direction.remove('right')
+      if letters.index(letter) <= 3:
+        direction.remove('left')
+
+    if spaces == 4:
+      if line_count < 4:
+        direction.remove('up')
+      if line_count > 4:
+        direction.remove('down')
+      if letters.index(letter) >= 4:
+        direction.remove('right')
+      if letters.index(letter) <= 2:
+        direction.remove('left')
+
+    if spaces == 3:
+      if line_count < 3:
+        direction.remove('up')
+      if line_count > 5:
+        direction.remove('down')
+      if letters.index(letter) >= 5:
+        direction.remove('right')
+      if letters.index(letter) <= 1:
+        direction.remove('left')
+
+    if spaces == 2:
+      if line_count < 2:
+        direction.remove('up')
+      if line_count > 6:
+        direction.remove('down')
+      if letters.index(letter) >= 6:
+        direction.remove('right')
+      if letters.index(letter) <= 0:
+        direction.remove('left')
+def direction_reset():
+  global direction
+  direction = []
+  direction.append('up')
+  direction.append('down')
+  direction.append('right')
+  direction.append('left')
 #places the boats for both BoatBot and the player (explained better in placing_function.py)
-def boat_placer(length, direction, line, column, placing_dict):
+def boat_placer(length, direction, line, column, placing_dict, overlap, backup_list):
   if isinstance(line, str) == False:
     line = str(line)
   column = letters.index(column)
+  instance_count = 0
+  global extra_board
   for i in range(boat_length[length]):
+    if placing_dict[line][column] == '0' and overlap == False:
+      if backup_list.count(length) < 1:
+        backup_list.append(length)
+      if backup_list != boat_list_robot:
+        print('Error: please reBoat.')
+        backup_list.append(length)
+      for i in range(instance_count):
+        if direction == 'right':
+          column -= 1
+          placing_dict[line][column] = extra_board[line][column]
+        if direction == 'left':
+          column += 1
+          placing_dict[line][column] = extra_board[line][column]
+        if direction == 'down':
+          line = int(line)
+          line -= 1
+          line = str(line)
+          placing_dict[line][column] = extra_board[line][column]
+        if direction == 'up':
+          line = int(line)
+          line += 1
+          line = str(line)
+          placing_dict[line][column] = extra_board[line][column]
+      break
     if direction == 'right':
       placing_dict[line][column] = '0'
       column += 1
@@ -138,6 +259,7 @@ def boat_placer(length, direction, line, column, placing_dict):
       line = int(line)
       line -= 1
       line = str(line)
+    instance_count += 1
   print()
 #prints the board (explained more in board_print.py)
 def board_print(board):
@@ -161,6 +283,7 @@ def options_menu():
   print("AutoBoat: Chooses the boats randomly for you.")
   print("Rapid Fire: Allows you to shoot multiple shells per round.")
   print("AutoPlace: Places the boats randomly for you (enables AutoBoat as well).")
+  print("Boat Overlap: Allow boats to overlap each other.")
   print()
   print("Difficulty options: ")
   print("Hard Mode: Robot uses double fire per round.")
@@ -191,8 +314,22 @@ player_misfire = []
 player_hit = []
 robot_misfire = []
 
+#Greeting
+print("Welcome to Battleship. This game will put you up against a randomized machine.")
+print("Before we set out, we need to get out ships sorted.")
+
+#Options Menu Prompt
+settings = input("Would you like to open the options menu? (y/n): ")
+if settings == 'y' or settings == 'yes':
+  options_menu()
+if settings == 'n' or settings == 'no':
+  print()
+print("boatBot is choosing...")
+time.sleep(1)
+
 #boat picker for boatBot
 while boats > -1:
+  
   #chooses a random boat, line, and column for boatBot
   boat_robot = random.choice(boat_list_robot)
   line_choice_robot = random.choice(lines)
@@ -215,62 +352,12 @@ while boats > -1:
   #Chooses the direction the boats will go in
   #Makes sure the boats don't go off the board
   line_robot = int(line_choice_robot)
-  if boat_robot == 'Carrier':
-    space_count = 5
-  if boat_robot == 'Battleship':
-    space_count = 4
-  if boat_robot == 'Cruiser':
-    space_count = 3
-  if boat_robot == 'Submarine':
-    space_count = 3
-  if boat_robot == 'Destroyer':
-    space_count = 2
+  space_count = boat_length[boat_robot]
   #dir_robo is used to keep everything slightly more organized
   dir_robo = letter_choice_robot
 
-  ##Carrier (5 spaces)
-  if space_count == 5:
-    if line_robot < 5:
-      direction.remove('up')
-    if line_robot > 3:
-      direction.remove('down')
-    if (dir_robo == 'D' or dir_robo == 'E' or dir_robo == 'F' or dir_robo == 'G'):
-      direction.remove('right')
-    if (dir_robo == 'A' or dir_robo == 'B' or dir_robo == 'C' or dir_robo == 'D'):
-      direction.remove('left')
-
-  ##Battleship (4 spaces)
-  if space_count == 4:
-    if line_robot < 4:
-      direction.remove('up')
-    if line_robot > 4:
-      direction.remove('down')
-    if (dir_robo == 'E' or dir_robo == 'F' or dir_robo == 'G'):
-      direction.remove('right')
-    if (dir_robo == 'A' or dir_robo == 'B' or dir_robo == 'C'):
-      direction.remove('left')
-
-  ##Submarine and Cruiser (3 spaces)
-  if space_count == 3:
-    if line_robot < 3:
-      direction.remove('up')
-    if line_robot > 5:
-      direction.remove('down')
-    if (dir_robo == 'F' or dir_robo == 'G'):
-      direction.remove('right')
-    if (dir_robo == 'A' or dir_robo == 'B'):
-      direction.remove('left')
-
-  ##Destroyer (2 spaces)
-  if space_count == 2:
-    if line_robot < 2:
-      direction.remove('up')
-    if line_robot > 6:
-      direction.remove('down')
-    if dir_robo == 'G':
-      direction.remove('right')
-    if dir_robo == 'A':
-      direction.remove('left')
+  #sets up direction options
+  direction_setup(space_count, line_robot, dir_robo)
 
   #randomly selects the direction
   direction_boat_robot = random.choice(direction)
@@ -278,23 +365,15 @@ while boats > -1:
   boat_number = letters.index(letter_choice_robot)
 
   #adds all the directions originally removed from the direction list (general cleanup basically)
-  if direction.count('up') == 0:
-    direction.append('up')
-  if direction.count('down') == 0:
-    direction.append('down')
-  if direction.count('left') == 0:
-    direction.append('left')
-  if direction.count('right') == 0:
-    direction.append('right')
+  direction_reset()
   #removes the boat from the list
   boat_list_robot.remove(boat_robot)
 
   #Places the boat on the board
-  boat_placer(boat_robot, direction_boat_robot, line_choice_robot, letter_choice_robot, bot_list)
+  boat_placer(boat_robot, direction_boat_robot, line_choice_robot, letter_choice_robot, bot_list, options_list['Boat Overlap'], boat_list_robot)
 
   #Subtracts 1 from boats to properly loop
   boats = boats - 1
-
   #Double checks if the boat list is empty
   if boat_list_robot == []:
     break
@@ -306,16 +385,6 @@ boats = 5
 print()
 time.sleep(1)
 
-#Greeting
-print("Welcome to Battleship. This game will put you up against a randomized machine.")
-print("Before we set out, we need to get out ships sorted.")
-
-#Options Menu Prompt
-settings = input("Would you like to open the options menu? (y/n): ")
-if settings == 'y' or settings == 'yes':
-  options_menu()
-if settings == 'n' or settings == 'no':
-  print()
 #Sets the board up for Veteran Difficulty (if enabled)
 if options_list['Veteran Mode'] == True:
   print("New Board: ")
@@ -328,31 +397,33 @@ if options_list['Veteran Mode'] == True:
   letters.remove('G')
   print()
 
-#boat picker for player
+#boat choices for player
 while boat_list_player != []:
-  print(boat_list_player)
-
+  print()
+  if options_list['AutoBoat'] == False:
+    print(boat_list_player)
   #Chooses random boat when AutoBoat is True
   #Automatic Selection (AutoBoat is enabled when AutoPlace is enabled)
   if options_list['AutoBoat'] == True:
     #delay so there's less of a mess
     time.sleep(0.5)
     boat_player_choice = random.choice(boat_list_player)
-    print("AutoBoat: " + str(boat_player_choice))
   #Manual Selection
   else:
     boat_player_choice = input("Type in a boat from the list above (caps sensitive): ")
+    #if it's in the list
     if boat_list_player.count(boat_player_choice) == 1:
       #confirmation
       confirmation_boat = input("You chose " + str(boat_player_choice) + ". Are you sure? (yes / no): ")
       if confirmation_boat == 'yes':
         boat_list_player.remove(boat_player_choice)
-      if confirmation_boat == 'no':
+        print()
+      elif confirmation_boat == 'no':
         boats = boats + 1
         print()
         continue
       #continues if input isnt yes or no
-      if not confirmation_boat == 'yes' or 'no':
+      else:
         print("Continuing...")
         print()
     #prints if something not in the boat list is put in
@@ -388,9 +459,11 @@ while boat_list_player != []:
       continue
     line_choice_player = int(line_choice_player)
     #Prints the boat and it's position
-    print(str(boat_player_choice) + " position: " + str(boat_position_player))
+    
   else:
     #manual selection
+    board_print(helpful_board)
+    print()
     line_choice_player = input("Choose the line you want to put the boat on (1-7): ")
     #checks if the number is in the lines list and loops if it isn't (breaks when a valid number is inputted)
     if lines.count(line_choice_player) == 0:
@@ -452,108 +525,15 @@ while boat_list_player != []:
     #Chooses the direction the boats will go in
     #Makes sure the boats don't go off the board
   line_player = int(line_choice_player)
-  if boat_player_choice == 'Carrier':
-    space_count = 5
-  if boat_player_choice == 'Battleship':
-    space_count = 4
-  if boat_player_choice == 'Cruiser':
-    space_count = 3
-  if boat_player_choice == 'Submarine':
-    space_count = 3
-  if boat_player_choice == 'Destroyer':
-    space_count = 2
+  space_count = boat_length[boat_player_choice]
   dir_play = letter_choice_player
-  ##Carrier (5 spaces, removed in Veteran Mode)
-  if options_list['AutoPlace'] == False:
-    print(line_player)
-  if space_count == 5:
-    if line_player < 5:
-      direction.remove('up')
-    if line_player > 3:
-      direction.remove('down')
-    if (dir_play == 'D' or dir_play == 'E' or dir_play == 'F' or dir_play == 'G'):
-      direction.remove('right')
-    if (dir_play == 'A' or dir_play == 'B' or dir_play == 'C' or dir_play == 'D'):
-      direction.remove('left')
-  ##Battleship (4 spaces)
-  #Veteran board
-  if options_list['Veteran Mode'] == True:
-    if space_count == 4:
-      if line_player < 4:
-        direction.remove('up')
-      if line_player > 2:
-        direction.remove('down')
-      if (dir_play == 'C' or dir_play == 'D' or dir_play == 'E'):
-        direction.remove('right')
-      if (dir_play == 'A' or dir_play == 'B' or dir_play == 'C'):
-        direction.remove('left')
-
-  #Normal board
-  else:
-    if space_count == 4:
-      if line_player < 4:
-        direction.remove('up')
-      if line_player > 4:
-        direction.remove('down')
-      if (dir_play == 'E' or dir_play == 'F' or dir_play == 'G'):
-        direction.remove('right')
-      if (dir_play == 'A' or dir_play == 'B' or dir_play == 'C'):
-        direction.remove('left')
-
-  ##Submarine and Cruiser (3 spaces)
-  #Veteran board
-  if options_list['Veteran Mode'] == True:
-    if space_count == 3:
-      if line_player < 3:
-        direction.remove('up')
-      if line_player > 3:
-        direction.remove('down')
-      if (dir_play == 'D' or dir_play == 'E'):
-        direction.remove('right')
-      if (dir_play == 'A' or dir_play == 'B'):
-        direction.remove('left')
-
-  #Normal board
-  else:
-    if space_count == 3:
-      if line_player < 3:
-        direction.remove('up')
-      if line_player > 5:
-        direction.remove('down')
-      if (dir_play == 'F' or dir_play == 'G'):
-        direction.remove('right')
-      if (dir_play == 'A' or dir_play == 'B'):
-        direction.remove('left')
-
-  ##Destroyer (2 spaces)
-  #Veteran board
-  if options_list['Veteran Mode'] == True:
-    if space_count == 2:
-      if line_player < 2:
-        direction.remove('up')
-      if line_player > 4:
-        direction.remove('down')
-      if dir_play == 'E':
-        direction.remove('right')
-      if dir_play == 'A':
-        direction.remove('left')
-
-  #Normal board
-  else:
-    if space_count == 2:
-      if line_player < 2:
-        direction.remove('up')
-      if line_player > 6:
-        direction.remove('down')
-      if dir_play == 'G':
-        direction.remove('right')
-      if dir_play == 'A':
-        direction.remove('left')
+  #sets up direction choices
+  direction_setup(space_count, line_player, dir_play)
 
   #automatic selection
   if options_list['AutoPlace'] == True:
     direction_player = random.choice(direction)
-    print(direction_player)
+
   #manual selection
   else:
     print(direction)
@@ -566,25 +546,28 @@ while boat_list_player != []:
       print()
 
   #adds missing directions back to list
-  if direction.count('up') == 0:
-    direction.append('up')
-  if direction.count('down') == 0:
-    direction.append('down')
-  if direction.count('left') == 0:
-    direction.append('left')
-  if direction.count('right') == 0:
-    direction.append('right')
+  direction_reset()
 
   #places the boats on the board
   if options_list['Veteran Mode'] == True:
-    boat_placer(boat_player_choice, direction_player, line_choice_player, letter_choice_player, vet_list)
+    boat_placer(boat_player_choice, direction_player, line_choice_player, letter_choice_player, vet_list, options_list['Boat Overlap'], boat_list_player)
   else:
-    boat_placer(boat_player_choice, direction_player, line_choice_player, letter_choice_player, player_list)
+    boat_placer(boat_player_choice, direction_player, line_choice_player, letter_choice_player, player_list, options_list['Boat Overlap'], boat_list_player)
+  if boat_list_player.count(boat_player_choice) >= 2:
+    boat_list_player.remove(boat_player_choice)
+    boats = boats + 1
+    continue
 
   #removes the boat from the boat list
   if boat_list_player.count(boat_player_choice) == 1:
     boat_list_player.remove(boat_player_choice)
     boats = boats - 1
+  if options_list['AutoBoat'] == True:
+    print("AutoBoat: " + str(boat_player_choice))
+  else:
+    print("Boat Choice: " + str(boat_player_choice))
+  print(str(boat_player_choice) + " position: " + str(boat_position_player))
+  print("Direction: " + direction_player)
   #prints the board if AutoPlace is False
   if options_list['AutoPlace'] == False:
     board_print(player_list)
