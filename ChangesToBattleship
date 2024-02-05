@@ -1,0 +1,8 @@
+-Made direction choices a function
+***Function explanation can be found under direction_function.py
+-Direction list now resets via a function
+***Doesn't have a separate file, it's only about 5 lines
+-Changed the aim board miss icon from 0 to M for visibility
+-Fixed a few small errors
+-Made it so (by default) you or boatBot can't stack boats. This can be disabled in options or in the code itself. (Boat Overlap on Line 12)
+-Added a helpful board for normal gameplay (doesn't appear when AutoPlace is on)
