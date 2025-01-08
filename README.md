@@ -8,7 +8,6 @@ Battleship built in Python. Runs through the terminal or command prompt.
 Battleship in Python is made compeletely in Python and runs in the terminal or command prompt, specifically using print statements for any sort of display.
 
 I recently reprogrammed the entire project, due to the length of the file making it hard to read. This brought the size down from ~1600 lines to ~770 (including comments)
-If any errors are found while running, please leave a comment on the main Battleship file
 
 Battleship runs off of one .py file. Any other ones are used to explain any functions and their parameters in-depth. You are not required to download these files to play Battleship, but feel free to read them nonetheless.
 
@@ -26,12 +25,12 @@ I've kept it this way due to how unique it makes the game feel and to keep the l
 
 Game Customization Via The Options Menu:
 
-The addition of the options menu was for unique experiences however many times you've played the game. The options menu used to lock other options. This has since been removed to allow for varied gameplay.
+The addition of the options menu was for unique experiences however many times you've played the game.
 - AutoPlace and AutoBoat was for people who wanted to get to the game faster and not have to set up boards.
 - Rapid Fire is used for getting through the game easier or just about whatever you want to do.
 - Hard Mode is for players who want a slightly harder challenge.
 - Veteran Mode is for players who want to roll the dice and see if they can truly master the sea.
-- War Mode, as the name implies, gives boatBot (will get to the name later) the power of a war fleet, requiring a vast amount of luck to win the War.
+- War Mode, as the name implies, gives boatBot (will get to the name later) the power of a war fleet, requiring a vast amount of luck to win.
 
 Each mode can be combined and changed about for fun. Combining a lot of different, however, may cause issues.
 
@@ -72,11 +71,4 @@ Despite the name, it holds both the misses AND the hits.
 
 Will This Project Continue:
 
-I'll still work on Battleship from time to time, just less so. Some future features I plan on adding are listed below.
-
-Future Plans For The Project:
-One of the main ones I've thought about is an online connection. However, that'd require me to familiarize myself with that facet of Python, so it may take a bit.
-
-Another one that might come sooner is a TwoPlayer mode. Due to the massive code cleanup I did, this has become more viable to add in.
-
-Neither of these things have ETA's, but they will arrive someday.
+I'll still work on Battleship from time to time, just less so.
